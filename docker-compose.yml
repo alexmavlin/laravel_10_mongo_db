@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www/
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - 8876:80
+    container_name: nginx
+    depends_on:
+      - php
+
+  php:
+    build: 
+      context: .
+      dockerfile: _docker/php/Dockerfile
+    volumes:
+      - ./:/var/www/
+    depends_on:
+      - mongo
+    container_name: php
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - ./tmp/db/:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    container_name: mongodb
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    container_name: mongo-admin
+    
