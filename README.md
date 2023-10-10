@@ -5,8 +5,5 @@
 3. Run "composer update"
 4. Run "npm install"
 
-5. Run "composer require illuminate/support"
-6. 
-Now set up the mongodb package, for example jenseggers/mongodb
-https://github.com/mongodb/laravel-mongodb/blob/master/docs/install.md
+Use this for models: use MongoDB\Laravel\Eloquent\Model;
 
